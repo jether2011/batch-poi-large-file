@@ -1,15 +1,19 @@
 package br.ff.test;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.openxml4j.opc.PackageAccess;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.SheetUtil;
@@ -27,6 +31,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
+
+import com.monitorjbl.xlsx.StreamingReader;
 /**
  * 
  * @author JETHER ROIS
@@ -40,6 +46,8 @@ import org.xml.sax.helpers.XMLReaderFactory;
  * http://www.massapi.com/class/xs/XSSFReader.html
  * 
  * http://poi.apache.org/spreadsheet/how-to.html#xssf_sax_api
+ * 
+ * https://github.com/jeevatkm/excelReader/blob/master/src/main/java/com/myjeeva/poi/ExcelReader.java
  *
  */
 public class FFTest {
@@ -47,49 +55,69 @@ public class FFTest {
 	private static final String INPUTS_SHEET = "Inputs";
 	
 	public static void main(String[] args) {
-		File _file = new File(args[0].toString().trim());
+		File _file = new File(args[0].toString().trim());		
 		System.out.println("File created [" + _file.getAbsolutePath() + "]");
 		try {
-			_opc = OPCPackage.open(_file, PackageAccess.READ_WRITE);
-			System.out.println("OPCPackage opened the file [" + _opc.toString() + "]");
+			InputStream is = new FileInputStream(_file);
+			Workbook workbook = StreamingReader.builder()
+			        .rowCacheSize(100)    // number of rows to keep in memory (defaults to 10)
+			        .bufferSize(4096)     // buffer size to use when reading InputStream to file (defaults to 1024)
+			        .open(is);
+			System.out.println("StreamingReader is ok [" + workbook.toString() + "]");
+			Sheet _sheet = workbook.getSheet(INPUTS_SHEET);
+			System.out.println("Sheet is ok [" + _sheet.toString() + "]");
+//			for (Row r : _sheet) {
+//		      for (Cell c : r) {
+//		        System.out.println(c.getStringCellValue());
+//		      }
+//		    }
+			System.out.println("Finish.");
+//			XExcelFileReader xExcelFileReader = new XExcelFileReader(_file.getAbsolutePath());
+//			List<String[]> strings = xExcelFileReader.readRows(500);
+//			for (int i = 0; i < strings.size(); i++) {
+//				String[] sarr = strings.get(i);
+//				System.out.println(sarr[i]);
+//			}
+//			_opc = OPCPackage.open(_file, PackageAccess.READ_WRITE);
+//			System.out.println("OPCPackage opened the file [" + _opc.toString() + "]");
+//			
+//			XSSFReader _reader = new XSSFReader(_opc);
+//			SharedStringsTable _sst = _reader.getSharedStringsTable();	
+//			StylesTable styles = _reader.getStylesTable();
+//			
+//			XMLReader _parser = fetchSheetParser(_sst);
+//						
+//			XSSFReader.SheetIterator _sheetIteration = (XSSFReader.SheetIterator) _reader.getSheetsData();
+//			
+//			int index = 0;
+//	        while (_sheetIteration.hasNext()) {
+//	        	InputStream _sheetStream = _sheetIteration.next();	        	
+//	        	if (_sheetIteration.getSheetName().compareToIgnoreCase(INPUTS_SHEET) == 0) {
+//	        		InputSource _source = new InputSource(_sheetStream);
+//	        		System.out.println("InputSource._source [" + _source.toString() + "]");
+//				}	        	
+////	            InputStream stream = _sheetIteration.next();
+////	            String sheetName = _sheetIteration.getSheetName();
+////	            System.out.println(sheetName + " [index=" + index + "]:");
+////	            processSheet(styles, strings, new SheetToCSV(), stream);
+////	            stream.close();
+//	            ++index;
+//	        }
+//
+//			//XMLReader _parser = fetchSheetParser(_sst);
+//			//System.out.println("XMLReader parser finished [" + _parser.toString() + "]");
+//			
+//			// process the first sheet (Inputs to FastForecast)
+////			InputStream _sheet = _reader.getSheetsData().next();
+////			InputSource _sheetSource = new InputSource(_sheet);
+////			_parser.parse(_sheetSource);
+////			_sheet.close();
+//			
+//			SXSSFWorkbook _wb = new SXSSFWorkbook(100);
+//			_wb.createSheet("Inputs");
+//			
 
-			XSSFReader _reader = new XSSFReader(_opc);
-			SharedStringsTable _sst = _reader.getSharedStringsTable();	
-			StylesTable styles = _reader.getStylesTable();
-			
-			XMLReader _parser = fetchSheetParser(_sst);
-						
-			XSSFReader.SheetIterator _sheetIteration = (XSSFReader.SheetIterator) _reader.getSheetsData();
-			
-			int index = 0;
-	        while (_sheetIteration.hasNext()) {
-	        	InputStream _sheetStream = _sheetIteration.next();	        	
-	        	if (_sheetIteration.getSheetName().compareToIgnoreCase(INPUTS_SHEET) == 0) {
-	        		InputSource _source = new InputSource(_sheetStream);
-	        		System.out.println("InputSource._source [" + _source.toString() + "]");
-				}	        	
-//	            InputStream stream = _sheetIteration.next();
-//	            String sheetName = _sheetIteration.getSheetName();
-//	            System.out.println(sheetName + " [index=" + index + "]:");
-//	            processSheet(styles, strings, new SheetToCSV(), stream);
-//	            stream.close();
-	            ++index;
-	        }
-
-			//XMLReader _parser = fetchSheetParser(_sst);
-			//System.out.println("XMLReader parser finished [" + _parser.toString() + "]");
-			
-			// process the first sheet (Inputs to FastForecast)
-//			InputStream _sheet = _reader.getSheetsData().next();
-//			InputSource _sheetSource = new InputSource(_sheet);
-//			_parser.parse(_sheetSource);
-//			_sheet.close();
-			
-			SXSSFWorkbook _wb = new SXSSFWorkbook(100);
-			_wb.createSheet("Inputs");
-			
-
-		} catch (IOException | OpenXML4JException | SAXException e) {
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		} finally {
 //			try {

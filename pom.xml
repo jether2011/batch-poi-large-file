@@ -64,6 +64,12 @@
 			<version>2.6.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.monitorjbl</groupId>
+			<artifactId>xlsx-streamer</artifactId>
+			<version>1.0.1</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -91,7 +97,7 @@
 					<archive>
 						<manifest>
 							<mainClass>br.ff.test.FFTest</mainClass>
-<!-- 							<mainClass>br.ff.test.FromHowTo</mainClass> -->
+							<!-- <mainClass>br.ff.test.FromHowTo</mainClass> -->
 						</manifest>
 					</archive>
 				</configuration>
