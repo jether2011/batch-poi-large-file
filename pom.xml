@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>br.com.test.poi</groupId>
-	<artifactId>ff-test</artifactId>
+	<groupId>com.jetherrodrigues.large</groupId>
+	<artifactId>batch-test</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
@@ -73,7 +73,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>ff-test</finalName>
+		<finalName>batch-test</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -96,8 +96,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>br.ff.test.FFTest</mainClass>
-							<!-- <mainClass>br.ff.test.FromHowTo</mainClass> -->
+							<mainClass>com.jetherrodrigues.large.BatchExecutorTest</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
