@@ -1,28 +1,27 @@
 package com.jetherrodrigues;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.openxml4j.opc.PackageAccess;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-
-import com.monitorjbl.xlsx.StreamingReader;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  * 
  * @author JETHER ROIS
  * 
- *         https://github.com/monitorjbl/excel-streaming-reader
  */
-public class BatchExecutorTest {
+public class BatchExecutorXSSFWorkbookTest {
 
 	private static String INPUTS_SHEET;
 	private static final String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
+	private static Workbook _wb;
 
 	public static void main(String[] args) {
 		System.out.println("Start test: " + new SimpleDateFormat(DATE_PATTERN).format(new Date()));
@@ -37,24 +36,24 @@ public class BatchExecutorTest {
 		File _file = new File(args[0].toString().trim());
 		System.out.println("File created and loaded [" + _file.getAbsolutePath() + "]");
 
-		InputStream _is;
+		OPCPackage _opc;
 		try {
 			System.out.println("Starting try open with StreamingReader.....");
 
-			_is = new FileInputStream(_file);
-			Workbook _wb = StreamingReader.builder().rowCacheSize(200).bufferSize(4096).open(_is);
+			_opc = OPCPackage.open(_file, PackageAccess.READ_WRITE);
+			_wb = new XSSFWorkbook(_opc);
 			
-			System.out.println("StreamingReader is ok [" + _wb.toString() + "]");
+			System.out.println("XSSFWorkbook is ok [" + _wb.toString() + "]");
 
 			Sheet _sheet = _wb.getSheet(INPUTS_SHEET);
 
 			System.out.println("Sheet is ok [" + _sheet.getSheetName() + "] and starting loop to look inside sheet....");
 
-			for (Row _r : _sheet) {
-				for (Cell _c : _r) {
-					System.out.println(_c.getStringCellValue());
-				}
-			}
+//			for (Row _r : _sheet) {
+//				for (Cell _c : _r) {
+//					System.out.println(_c.getStringCellValue());
+//				}
+//			}
 
 			System.out.println("End the proccess of batch: " + new SimpleDateFormat(DATE_PATTERN).format(new Date()));
 

@@ -96,7 +96,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>com.jetherrodrigues.large.BatchExecutorTest</mainClass>
+							<mainClass>com.jetherrodrigues.BatchExecutorXSSFWorkbookTest</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
