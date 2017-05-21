@@ -10,6 +10,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.monitorjbl.xlsx.StreamingReader;
 
@@ -50,11 +51,11 @@ public class BatchExecutorTest {
 
 			System.out.println("Sheet is ok [" + _sheet.getSheetName() + "] and starting loop to look inside sheet....");
 
-			for (Row _r : _sheet) {
-				for (Cell _c : _r) {
-					System.out.println(_c.getStringCellValue());
-				}
-			}
+//			for (Row _r : _sheet) {
+//				for (Cell _c : _r) {
+//					System.out.println(_c.getStringCellValue());
+//				}
+//			}
 
 			System.out.println("End the proccess of batch: " + new SimpleDateFormat(DATE_PATTERN).format(new Date()));
 
